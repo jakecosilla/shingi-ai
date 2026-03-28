@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ShingiAI.Api/ShingiAI.Api.csproj" />
+  <Project Path="ShingiAI.Application/ShingiAI.Application.csproj" />
+  <Project Path="ShingiAI.Domain/ShingiAI.Domain.csproj" />
+  <Project Path="ShingiAI.Infrastructure/ShingiAI.Infrastructure.csproj" />
+</Solution>
