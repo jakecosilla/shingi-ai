@@ -187,5 +187,4 @@ Return ONLY JSON format:
 
     return {
         "critique": verdict,
-        "critic_reason": reason
-    }
+        "critic_reason": reason    }
