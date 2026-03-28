@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Send, Bot, User, Sparkles, Server } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const agents = [
-  { id: 1, name: 'Knowledge Bot', role: 'Enterprise Q&A', icon: Bot },
-  { id: 2, name: 'Code Assistant', role: 'Architecture & Review', icon: Server },
-  { id: 3, name: 'Data Analyst', role: 'Metrics & Visualization', icon: Sparkles },
+  { id: 1, name: 'Knowledge Bot', role: 'Litigation Q&A', icon: Bot },
+  { id: 2, name: 'Paralegal AI', role: 'Contract Review', icon: Server },
+  { id: 3, name: 'Research Assistant', role: 'Precedents & Case Law', icon: Sparkles },
 ];
 
 const Chat = () => {
   const [activeAgent, setActiveAgent] = useState(agents[0]);
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! I am connected to the Shingi AI semantic knowledge base. How can I assist your enterprise today?", sender: 'bot' }
+    { id: 1, text: "Hello! I am connected to the firm's secure legal knowledge base. How can I assist with your caseload today?", sender: 'bot' }
   ]);
   const [input, setInput] = useState('');
 
@@ -26,7 +26,7 @@ const Chat = () => {
     setTimeout(() => {
       setMessages(prev => [...prev, {
         id: Date.now() + 1,
-        text: `Based on the latest RAG embeddings and my specialized tools as ${activeAgent.name}, I'm processing your request. In a full implementation, I would retrieve the relevant enterprise data...`,
+        text: `Based on the latest RAG embeddings and my specialized tools as ${activeAgent.name}, I'm processing your request. In a full implementation, I would retrieve the relevant legal precedents...`,
         sender: 'bot'
       }]);
     }, 1500);

@@ -1,165 +1,116 @@
 # 🚀 Shingi AI – Agentic Legal AI Platform
 
-Shingi AI is a production-ready agentic AI system that combines:
-
-- .NET backend (RAG + business logic)
-- Python LangGraph agent orchestration
-- Local or cloud LLMs (Ollama / OpenAI)
-
-It demonstrates a multi-agent architecture (Planner → Executor → Critic) with tool orchestration, self-correction, and observability.
+Shingi AI is an enterprise-grade agentic AI platform for law firms, combining a secure .NET 10 backend with Python LangGraph orchestration and a premium mobile-friendly React frontend.
 
 ---
 
-## 🧠 Architecture
+## 🏗️ Architecture
 
-React UI (optional)
-      ↓
-.NET API (RAG + MCP server)
-      ↓
-Python LangGraph Agent
-      ├── Planner (decides)
-      ├── Executor (acts)
-      ├── Critic (evaluates)
-      └── Retry Loop (self-correcting)
-      ↓
-Tools (RAG, APIs, logic)
-      ↓
-LLM (Ollama / OpenAI)
+```mermaid
+graph TD
+    UI[React Frontend - Vite 8] -- JWT Auth --> API[.NET 10 API]
+    API -- Entity Framework Core --> DB[SQLite Identity DB]
+    API -- Ingestion --> RAG[RAG System]
+    API -- Orchestration --> Agent[Python LangGraph Agent]
+    Agent -- Tools --> API
+    Agent -- LLM --> Provider[Ollama / OpenAI]
+```
 
 ---
 
 ## 🔥 Key Features
 
+### 🔐 Enterprise Security
+- **JWT Authentication:** Stateless, secure token-based access with 24-hour expiry.
+- **Identity Management:** Full ASP.NET Core Identity integration for users and roles.
+- **RBAC (Role-Based Access Control):** Granular access policy for **Lawyers** (Drafting, Tools, AI) and **Customers** (Portal, Cases, Approved Docs).
+- **Secure CORS:** Strict origin policy for frontend-to-backend communication.
+- **Auto-Seeding:** Automatic generation of 'Admin' and 'User' roles on startup.
+
+### 📱 Premium Frontend (NEW)
+- **Mobile-First Design:** Fully responsive glassmorphism UI with slide-out navigation for mobile.
+- **Customer Portal:** Dedicated interface for clients to track case progress and download lawyer-approved results.
+- **Lawyer Dashboard:** AI-powered workflow management with real-time agent observability.
+- **React 19 + Framer Motion:** Fluid animations and micro-interactions for a premium feel.
+
 ### ✅ Agentic AI (LangGraph)
-- Multi-agent system (Planner, Executor, Critic)
-- Dynamic tool selection (MCP-style)
-- Conditional branching workflows
-- Self-healing retry loop
-
-### ✅ Retrieval-Augmented Generation (RAG)
-- Document ingestion pipeline
-- Embeddings via Ollama (nomic-embed-text)
-- Vector search (pluggable)
-- Context-aware responses
-
-### ✅ MCP-style Tool System
-- Tool registry pattern
-- Decoupled tool execution (.NET)
-- Agent-controlled orchestration (Python)
-
-### ✅ Observability & Production Readiness
-- Request tracing (request_id)
-- Structured logging
-- Execution metrics (latency, retries)
-- Health endpoint
+- **Multi-agent system:** Planner, Executor, and Critic nodes for high-accuracy reasoning.
+- **Self-Healing:** Automatic retry loops and conditional branching based on agent critique.
+- **MCP-style Tools:** Tool registry pattern decoupled from the orchestration logic.
 
 ---
 
 ## 🏗️ Project Structure
 
+```text
 shingi-ai/
 ├── src/
-│   ├── backend/              # .NET API (RAG + business logic)
-│   └── agent/                # Python LangGraph agent
+│   ├── frontend/             # React 19 + Vite 8 (Premium UI)
+│   ├── backend/              # .NET 10 API (Security, Identity, RAG)
+│   └── agent/                # Python LangGraph (Orchestration)
+```
 
 ---
 
-## ⚙️ Setup
+## ⚙️ Setup & Execution
 
-### 🔹 Backend (.NET)
+### 1️⃣ Database Setup
+Ensure the SQLite database is initialized:
+```bash
+cd src/backend
+dotnet ef database update --project ShingiAI.Infrastructure --startup-project ShingiAI.Api
+```
 
+### 2️⃣ Start Backend (.NET)
+```bash
 cd src/backend/ShingiAI.Api
 dotnet run
+```
+- **API URL:** `http://localhost:5076`
+- **Documentation:** `http://localhost:5076/scalar/v1` (Scalar)
 
-Runs on:
-http://localhost:5076
-
----
-
-### 🔹 Agent (Python)
-
+### 3️⃣ Start Agent (Python)
+```bash
 cd src/agent
-python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8000
+```
 
-Runs on:
-http://localhost:8000
-
----
-
-### 🔹 Ollama (Local LLM)
-
-ollama pull llama3
-ollama pull nomic-embed-text
-ollama run llama3
+### 4️⃣ Start Frontend (React)
+```bash
+cd src/frontend
+npm install
+npm run dev -- --port 3001
+```
+- **App URL:** `http://localhost:3001`
 
 ---
 
-## 🧪 Usage
+## 🧪 Security API Examples
 
-### Run Agent
-
-curl -X POST http://localhost:8000/agent/run \
+### Register User
+```bash
+curl -X POST http://localhost:5076/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"question":"What is RAG?"}'
+  -d '{"email":"lawyer@firm.com", "password":"Password123!", "fullName":"Jane Doe"}'
+```
+
+### Login (Obtain JWT)
+```bash
+curl -X POST http://localhost:5076/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"lawyer@firm.com", "password":"Password123!"}'
+```
 
 ---
 
-### Health Check
-
-GET http://localhost:8000/health
-
----
-
-## 🧠 Example Response
-
-{
-  "request_id": "...",
-  "result": {
-    "question": "What is RAG?",
-    "answer": "...",
-    "sources": [],
-    "tool": "rag_search",
-    "critique": "GOOD",
-    "retries": 1
-  },
-  "metrics": {
-    "duration_seconds": 16.8,
-    "retries": 1
-  }
-}
-
----
-
-## 🎯 Design Principles
-
-- Separation of Concerns (.NET = tools, Python = orchestration)
-- Single Source of Truth (RAG in backend only)
-- Agent-first Design (LLM decides)
-- Production Safety (structured outputs, retry limits, error handling)
-
----
-
-## 🚀 Technologies
-
-- Backend: ASP.NET Core (.NET 10+)
-- Agent: Python, LangGraph, LangChain
-- LLM: Ollama / OpenAI
-
----
-
-## 💡 Future Improvements
-
-- Vector DB integration
-- Multi-tool chaining
-- Knowledge graphs
-- Evaluation pipelines
-- Docker deployment
+## 🎨 Design Principles
+- **Aesthetic Excellence:** Modern glassmorphism dark theme.
+- **Separation of Concerns:** .NET for security/data, Python for "intelligence".
+- **Agent-First:** All business logic is exposed as tools for the LLM to decide on actions.
 
 ---
 
 ## 🏁 Status
-
-Production-ready agentic AI system.
+**Production-Ready Enterprise Platform.**
+Current Version: 1.1.0 (Security & Portal Update)

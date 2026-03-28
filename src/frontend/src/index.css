@@ -11,6 +11,9 @@
   --panel-bg: rgba(21, 24, 30, 0.6);
   --danger: #ef4444;
   --success: #10b981;
+  --customer-accent: #8b5cf6;
+  --customer-accent-glow: rgba(139, 92, 246, 0.4);
+  --sidebar-width: 280px;
 }
 
 * {
@@ -114,4 +117,26 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+/* Mobile Utilities */
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+  
+  .show-mobile {
+    display: block !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  .mobile-grid-1 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.show-mobile {
+  display: none;
 }

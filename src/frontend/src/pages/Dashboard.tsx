@@ -1,8 +1,16 @@
-import React from 'react';
-import { Users, Server, Zap, ArrowUpRight, Activity } from 'lucide-react';
+import { Users, Zap, ArrowUpRight, Activity } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const StatCard = ({ title, value, trend, icon: Icon, delay }) => (
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  trend: string;
+  icon: LucideIcon;
+  delay: number;
+}
+
+const StatCard = ({ title, value, trend, icon: Icon, delay }: StatCardProps) => (
   <motion.div 
     className="stat-card glass-panel"
     initial={{ opacity: 0, y: 20 }}
@@ -33,13 +41,13 @@ const Dashboard = () => {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
       >
-        Enterprise Overview
+        Lawyer Dashboard
       </motion.h1>
       
       <div className="dashboard-grid">
-        <StatCard title="Active Agents" value="12" trend="+3 this week" icon={Activity} delay={0.1} />
-        <StatCard title="Total Queries" value="45.2k" trend="+12.5% vs last month" icon={Users} delay={0.2} />
-        <StatCard title="Avg Latency" value="240ms" trend="-15ms improvement" icon={Zap} delay={0.3} />
+        <StatCard title="Active Cases" value="28" trend="+2 this week" icon={Activity} delay={0.1} />
+        <StatCard title="Documents Analyzed" value="1,245" trend="+18% vs last month" icon={Users} delay={0.2} />
+        <StatCard title="Billable Hours Saved" value="142" trend="+15hrs optimization" icon={Zap} delay={0.3} />
       </div>
 
       <div className="chart-section">

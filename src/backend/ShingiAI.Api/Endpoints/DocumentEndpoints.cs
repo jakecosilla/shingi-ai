@@ -12,7 +12,8 @@ public static class DocumentEndpoints
     public static IEndpointRouteBuilder MapDocumentEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup(RoutePrefix)
-                          .WithTags("Documents");
+                          .WithTags("Documents")
+                          .RequireAuthorization();
 
         group.MapPost("/ingest", IngestDocument)
              .WithName("IngestDocument");

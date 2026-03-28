@@ -12,7 +12,8 @@ public static class AskEndpoints
     public static IEndpointRouteBuilder MapAskEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup(RoutePrefix)
-                          .WithTags("AI");
+                          .WithTags("AI")
+                          .RequireAuthorization();
 
         group.MapPost("/ask", PostAskEndpoint)
              .WithName("AskQuestion");
