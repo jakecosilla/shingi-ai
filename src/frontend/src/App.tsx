@@ -23,6 +23,7 @@ const Sidebar = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) =>
   const customerNav = [
     { path: '/customer', icon: Home, label: 'Customer Portal' },
     { path: '/customer/cases', icon: Briefcase, label: 'My Cases' },
+    { path: '/chat', icon: MessageSquare, label: 'Legal AI Chat' },
     { path: '/customer/results', icon: CheckSquare, label: 'Approved Results' },
   ];
 
@@ -167,6 +168,10 @@ function AppContent() {
                   <ProtectedRoute role="CUSTOMER">
                     <ApprovedResults />
                   </ProtectedRoute>
+                } />
+
+                <Route path="/chat" element={
+                   <Chat />
                 } />
 
                 <Route path="/settings" element={<div className="glass-panel" style={{padding: '2rem'}}><h2>Settings</h2><p>Configuration panel coming soon...</p></div>} />
