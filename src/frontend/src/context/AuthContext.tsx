@@ -32,6 +32,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // SHARED SECRET KEY (MATCHING BACKEND)
+  const CLIENT_SECRET = 'ShingiAI_Frontend_Encryption_Key_2026_Secure!';
+
+  const encryptPassword = (password: string) => {
+    // @ts-ignore - CryptoJS is loaded via CDN in index.html
+    const key = CryptoJS.SHA256(CLIENT_SECRET);
+    // @ts-ignore
+    const iv = CryptoJS.lib.WordArray.random(16);
+    // @ts-ignore
+    const encrypted = CryptoJS.AES.encrypt(password, key, { iv: iv });
+    
+    // Combine IV and CipherText (matches backend decryption logic)
+    // @ts-ignore
+    return iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Base64);
+  };
+
   useEffect(() => {
     const savedUser = localStorage.getItem('shingi_user');
     if (savedUser) {
@@ -47,10 +63,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     setError(null);
     try {
+      const encryptedPassword = encryptPassword(password);
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password: encryptedPassword }),
       });
 
       if (!response.ok) {
@@ -80,10 +97,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     setError(null);
     try {
+      const encryptedPassword = encryptPassword(password);
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, fullName }),
+        body: JSON.stringify({ email, password: encryptedPassword, fullName }),
       });
 
       if (!response.ok) {

@@ -29,21 +29,21 @@ cd ../..
 echo -e "${YELLOW}Starting .NET API Backend...${NC}"
 cd src/backend
 # Assuming ShingiAI.Api is the start project
-dotnet run --project ShingiAI.Api/ShingiAI.Api.csproj --urls "http://localhost:5000" &
+dotnet run --project ShingiAI.Api/ShingiAI.Api.csproj --urls "http://localhost:5076" &
 BACKEND_PID=$!
 cd ../..
 
 # Start the Frontend
 echo -e "${YELLOW}Starting React Frontend...${NC}"
 cd src/frontend
-npm install > /dev/null 2>&1
-npm run dev -- --port 3000 &
+npm install || echo "npm install failed"
+npm run dev -- --port 3001 --strictPort &
 FRONTEND_PID=$!
 cd ../..
 
 echo -e "\n${GREEN}✔ All systems are running!${NC}"
-echo -e "Frontend: http://localhost:3000"
-echo -e "Backend API: http://localhost:5000"
+echo -e "Frontend: http://localhost:3001"
+echo -e "Backend API: http://localhost:5076"
 echo -e "Agent API: http://localhost:8000"
 echo -e "\nPress [CTRL+C] to stop all services."
 
