@@ -25,15 +25,15 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE_URL = 'http://localhost:5076';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5076';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // SHARED SECRET KEY (MATCHING BACKEND)
-  const CLIENT_SECRET = 'ShingiAI_Frontend_Encryption_Key_2026_Secure!';
+  // SHARED SECRET KEY (MATCHING BACKEND) - loaded from .env
+  const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
 
   const encryptPassword = (password: string) => {
     // @ts-ignore - CryptoJS is loaded via CDN in index.html
