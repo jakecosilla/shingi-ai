@@ -82,10 +82,11 @@ coverage/
 
 # =========================
 
-# Databases
+# Secrets & Databases
 
 # =========================
 
+appsettings.json
 *.db
 *.sqlite
 *.sqlite3
