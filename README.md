@@ -75,6 +75,24 @@ docker-compose up -d
 ./start.sh
 ```
 
+### 🛠️ Manual Environment Setup
+
+Since secrets are ignored in the repository, you must set up your local configuration files:
+
+#### 🔹 Backend (.NET)
+Create `src/backend/ShingiAI.Api/appsettings.json` by copying the template:
+```bash
+cp src/backend/ShingiAI.Api/appsettings.Template.json src/backend/ShingiAI.Api/appsettings.json
+# Update the YOUR_JWT_SECRET_HERE and YOUR_CLIENT_SECRET_HERE in the new file.
+```
+
+#### 🔹 Frontend (React)
+Create `src/frontend/.env` by copying the example:
+```bash
+cp src/frontend/.env.example src/frontend/.env
+# Update the VITE_CLIENT_SECRET in the new .env file.
+```
+
 ---
 
 ## ⚙️ Service Ports
